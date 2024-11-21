@@ -1,10 +1,8 @@
 # Tado° Prometheus Exporter
 
-[![Push on branch](https://github.com/eko/tado-exporter/actions/workflows/master.yml/badge.svg)](https://github.com/eko/tado-exporter/actions/workflows/master.yml)
+[![Push on branch](https://github.com/acoster/tado-exporter/actions/workflows/master.yml/badge.svg)](https://github.com/acoster/tado-exporter/actions/workflows/master.yml)
 
-This is a Prometheus exporter for [tado°](https://www.tado.com/) thermostatic handles.
-
-![Grafana dashboard](https://raw.githubusercontent.com/eko/tado-exporter/master/misc/screenshot.jpg)
+This is a Prometheus exporter for [tado°](https://www.tado.com/) thermostats, based on [eko/tado-exporter](https://github.com/eko/tado-exporter)
 
 ## Prerequisites
 
@@ -12,24 +10,11 @@ In case you want to develop on this project, you will need:
 
 * [Rust](https://www.rust-lang.org/)
 
-If you just want to use it, you need nothing apart download and run the binary file in the next step.
-
 ## Installation
-
-### Download binary
-
-You can download the latest version of the binary built for your architecture here:
-
-* Architecture **x86_64** [
-    [Linux](https://github.com/eko/tado-exporter/releases/latest/download/tado-exporter-v0.0.3-x86_64-unknown-linux-gnu.tar.gz)
-]
-* Architecture **arm** [
-    [Linux](https://github.com/eko/tado-exporter/releases/latest/download/tado-exporter-v0.0.3-arm-unknown-linux-gnueabihf.tar.gz)
-]
 
 ### Using Docker
 
-The exporter is also available as a [Docker image](https://hub.docker.com/r/ekofr/tado-exporter).
+The exporter is also available as a [Docker image](https://ghcr.io/acoster/tado-exporter).
 You can run it using the following example and pass configuration environment variables:
 
 ```
@@ -37,14 +22,14 @@ $ docker run \
   -e 'EXPORTER_USERNAME=your-username@acme.tld' \
   -e 'EXPORTER_PASSWORD=your-password' \
   -p '9898:9898' \
-  ekofr/tado-exporter:latest
+  ghcr.io/acoster/tado-exporter:master
 ```
 
 ### From sources
 
 Optionally, you can download and build it from the sources. You have to retrieve the project sources by using one of the following way:
 ```bash
-$ git clone https://github.com/eko/tado-exporter
+$ git clone https://github.com/acoster/tado-exporter
 ```
 
 Then, just build the binary:
@@ -110,26 +95,28 @@ scrape_configs:
       - targets: ['localhost:9898']
 ```
 
-## Available environment variables
+## Environment variables
 
-| Environment variable name    | Description                                                                                |
-|:----------------------------:|--------------------------------------------------------------------------------------------|
-| EXPORTER_USERNAME      | Required. This represent your tado° account username/email                                       |
-| EXPORTER_PASSWORD      | Required. This represent your tado° account password                                             |
-| EXPORTER_CLIENT_SECRET | Optional. This represent your tado° account client secret, using default value seems to work     |
-| EXPORTER_TICKER        | Optional (default: 10). This represent the number of seconds the exporter will look for new data |
-| RUST_LOG               | Optional (default: info). This describes the log level (see https://docs.rs/env_logger/)         |
+These variables are used to configure the tool's behaviour:
 
-## Available Prometheus metrics
+| Environment variable name  | Description                                                                                     |
+|:-------------------------:|--------------------------------------------------------------------------------------------------|
+| `EXPORTER_USERNAME`       | Required. This represent your tado° account username/email                                       |
+| `EXPORTER_PASSWORD`       | Required. This represent your tado° account password                                             |
+| `EXPORTER_CLIENT_SECRET`  | Optional. This represent your tado° account client secret, using default value seems to work     |
+| `EXPORTER_TICKER`         | Optional (default: 10). This represent the number of seconds the exporter will look for new data |
+| `RUST_LOG`                | Optional (default: info). This describes the log level (see https://docs.rs/env_logger/)         |
 
-| Metric name                  | Description                                                                                |
-|:----------------------------:|--------------------------------------------------------------------------------------------|
-| tado_activity_ac_power_value           | This represent the value (1.0 = ON, 0.0 = OFF) of ac power for every zone        |
-| tado_activity_heating_power_percentage | This represent the % of heating power for every zone                             |
-| tado_setting_temperature_value         | This represent the current temperature you asked/programmed in a zone            |
-| tado_sensor_temperature_value          | This represent the current temperature detected by sensor in a zone              |
-| tado_sensor_humidity_percentage        | This represent the current humidity % detected by sensor in a zone               |
+## Prometheus metrics
 
-## Community welcome
+All metrics have a `zone` label, set with the device's zone name.
 
-Please feel free to contribute to this project in order to make it evolve. You're very welcome.
+| Metric name                  | Description                                                                                  |
+|:----------------------------------------:|----------------------------------------------------------------------------------|
+| `tado_activity_ac_power_value`           | This represent the value (1.0 = ON, 0.0 = OFF) of ac power for every zone        |
+| `tado_activity_heating_power_percentage` | This represent the % of heating power for every zone                             |
+| `tado_setting_temperature_value`         | This represent the current temperature you asked/programmed in a zone            |
+| `tado_sensor_temperature_value`          | This represent the current temperature detected by sensor in a zone              |
+| `tado_sensor_humidity_percentage`        | This represent the current humidity % detected by sensor in a zone               |
+| `tado_sensor_window_opened`              | Set to `1.0` if windows in the zone have been detected as open, `0.0` otherwise  |
+
