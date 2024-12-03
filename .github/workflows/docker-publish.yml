@@ -4,11 +4,11 @@ on:
   push:
     branches: ["master"]
     paths-ignore:
-      - "README.md"
-      - ".gitignore"
-      - "misc/**"
+     - 'README.md'
+      - '.gitignore'
+      - 'misc/**'
   pull_request:
-    branches: [ "master" ]
+    branches: [ 'master' ]
 
 # Defines two custom environment variables for the workflow. These are used for the Container registry domain, and a name for the Docker image that this workflow builds.
 env:
@@ -64,6 +64,7 @@ jobs:
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see "[AUTOTITLE](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds)." 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
+        if: ${{ github.event_name != 'pull_request' }}
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
           subject-digest: ${{ steps.push.outputs.digest }}
