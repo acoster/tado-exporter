@@ -24,20 +24,11 @@ pub fn load() -> Config {
             Ok(v) => v.parse::<u64>().unwrap(),
             Err(_) => 10,
         },
-        username: match env::var("EXPORTER_USERNAME") {
-            Ok(v) => v,
-            Err(_) => "".to_string(),
-        },
-        password: match env::var("EXPORTER_PASSWORD") {
-            Ok(v) => v,
-            Err(_) => "".to_string(),
-        },
-        client_secret: match env::var("EXPORTER_CLIENT_SECRET") {
-            Ok(v) => v,
-            Err(_) => {
-                "wZaRN7rpjn3FoNyF5IFuxg9uMzYJcvOoQ8QWiIqS3hfk6gLhVlG57j5YNoZL2Rtc".to_string()
-            }
-        },
+        username: env::var("EXPORTER_USERNAME").unwrap_or_else(|_| "".to_string()),
+        password: env::var("EXPORTER_PASSWORD").unwrap_or_else(|_| "".to_string()),
+        client_secret: env::var("EXPORTER_CLIENT_SECRET").unwrap_or_else(|_| {
+            "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw".to_string()
+        }),
     };
 
     config.print();
@@ -66,7 +57,7 @@ mod tests {
         assert_eq!(config.password, "");
         assert_eq!(
             config.client_secret,
-            "wZaRN7rpjn3FoNyF5IFuxg9uMzYJcvOoQ8QWiIqS3hfk6gLhVlG57j5YNoZL2Rtc"
+            "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw"
         );
 
         // given the following environment variable values

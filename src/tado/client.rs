@@ -47,7 +47,7 @@ impl Client {
 
     async fn authenticate(&mut self) -> Result<AuthApiResponse, reqwest::Error> {
         let params = [
-            ("client_id", "tado-web-app"),
+            ("client_id", "public-api-preview"),
             ("client_secret", self.client_secret.as_str()),
             ("grant_type", "password"),
             ("scope", "home.user"),
