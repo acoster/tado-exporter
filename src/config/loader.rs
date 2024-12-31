@@ -26,9 +26,8 @@ pub fn load() -> Config {
         },
         username: env::var("EXPORTER_USERNAME").unwrap_or_else(|_| "".to_string()),
         password: env::var("EXPORTER_PASSWORD").unwrap_or_else(|_| "".to_string()),
-        client_secret: env::var("EXPORTER_CLIENT_SECRET").unwrap_or_else(|_| {
-            "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw".to_string()
-        }),
+        client_secret: env::var("EXPORTER_CLIENT_SECRET")
+            .unwrap_or_else(|_| "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw".to_string()),
     };
 
     config.print();
@@ -55,10 +54,7 @@ mod tests {
         assert_eq!(config.ticker, 10);
         assert_eq!(config.username, "");
         assert_eq!(config.password, "");
-        assert_eq!(
-            config.client_secret,
-            "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw"
-        );
+        assert_eq!(config.client_secret, "4HJGRffVR8xb3XdEUQpjgZ1VplJi6Xgw");
 
         // given the following environment variable values
         env::set_var("EXPORTER_USERNAME", "test-user");
